@@ -1,18 +1,24 @@
 "use client"
 
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useEffect, useState } from "react";
+import styles from "./index.module.css";
 
-const IndexPage: NextPage = () => {
-  const [imageUrl, setImageUrl] = useState("");
+// getServerSidePropsから渡されるpropsの型
+type Props = {
+  initialImageUrl: string;
+};
+
+const IndexPage: NextPage<Props> = ({ initialImageUrl }) => {
+  const [imageUrl, setImageUrl] = useState(initialImageUrl);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchImage().then((newImage) => {
-      setImageUrl(newImage.url); // 画像URLの状態を更新する
-      setLoading(false); // ローディング状態を更新する
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetchImage().then((newImage) => {
+  //     setImageUrl(newImage.url); // 画像URLの状態を更新する
+  //     setLoading(false); // ローディング状態を更新する
+  //   });
+  // }, []);
 
   // ボタンをクリックしたときに画像を読み込む処理
   const handleClick = async () => {
@@ -23,14 +29,28 @@ const IndexPage: NextPage = () => {
   }
 
   return (
-    <div>
-      <button onClick={handleClick}>他のにゃんこも見る</button>
-      <div>{loading || <img src={imageUrl} />}</div>
+    <div className={styles.page}>
+      <button onClick={handleClick} className={styles.button}>
+        他のにゃんこも見る
+      </button>
+      <div className={styles.frame}>
+        {loading || <img src={imageUrl} className={styles.img} />}
+      </div>
     </div>
   );
 };
 
 export default IndexPage;
+
+// サーバーサイドで実行する処理(app routerだと使用できない)
+// export const getServerSideProps: GetServerSideProps<Props> = async () => {
+//   const image = await fetchImage();
+//   return {
+//     props: {
+//       initialImageUrl: image.url,
+//     },
+//   };
+// };
 
 type Image = {
   url: string;
