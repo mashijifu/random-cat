@@ -1,7 +1,7 @@
 "use client"
 
-import { NextPage } from "next";
-import { useState } from "react";
+// import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
 // getServerSidePropsから渡されるpropsの型
@@ -9,17 +9,17 @@ import styles from "./index.module.css";
 //   initialImageUrl: string;
 // };
 
-const IndexPage = async () => {
-  const image = await fetchImage();
-  const [imageUrl, setImageUrl] = useState(image.url);
+const IndexPage = () => {
+  // const image = await fetchImage();
+  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   fetchImage().then((newImage) => {
-  //     setImageUrl(newImage.url); // 画像URLの状態を更新する
-  //     setLoading(false); // ローディング状態を更新する
-  //   });
-  // }, []);
+  useEffect(() => {
+    fetchImage().then((newImage) => {
+      setImageUrl(newImage.url); // 画像URLの状態を更新する
+      setLoading(false); // ローディング状態を更新する
+    });
+  }, []);
 
   // ボタンをクリックしたときに画像を読み込む処理
   const handleClick = async () => {
