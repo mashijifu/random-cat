@@ -1,16 +1,17 @@
 "use client"
 
-import { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import { NextPage } from "next";
+import { useState } from "react";
 import styles from "./index.module.css";
 
 // getServerSidePropsから渡されるpropsの型
-type Props = {
-  initialImageUrl: string;
-};
+// type Props = {
+//   initialImageUrl: string;
+// };
 
-const IndexPage: NextPage<Props> = ({ initialImageUrl }) => {
-  const [imageUrl, setImageUrl] = useState(initialImageUrl);
+const IndexPage = async () => {
+  const image = await fetchImage();
+  const [imageUrl, setImageUrl] = useState(image.url);
   const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
@@ -44,6 +45,8 @@ export default IndexPage;
 
 // サーバーサイドで実行する処理(app routerだと使用できない)
 // export const getServerSideProps: GetServerSideProps<Props> = async () => {
+// export const getServerSideImageUrl = async () => {
+// async function getServerSideImageUrl() {
 //   const image = await fetchImage();
 //   return {
 //     props: {
